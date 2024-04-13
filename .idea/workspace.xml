@@ -5,36 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2d80650-d25b-410c-a85f-1224fb13b8cf" name="Changes" comment="Implement jwt security, add swagger ui, create authentication and register endpoints along with some test endpoints">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/config/ApplicationConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/config/OpenApiConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/controller/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/controller/AuthenticationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/Permission.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/dto/AuthenticationRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/dto/AuthenticationResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/dto/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/dto/UserDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/entity/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/entity/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/SecurityConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/service/AuthenticationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/EventhorizonApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/EventhorizonApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +83,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -143,8 +118,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1712498927342</updated>
-      <workItem from="1712498929953" duration="25647000" />
+      <workItem from="1712498929953" duration="31492000" />
     </task>
+    <task id="LOCAL-00001" summary="Implement jwt security, add swagger ui, create authentication and register endpoints along with some test endpoints">
+      <option name="closed" value="true" />
+      <created>1712779310918</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712779310918</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
