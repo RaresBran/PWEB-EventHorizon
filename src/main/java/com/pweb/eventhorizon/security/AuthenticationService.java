@@ -1,4 +1,4 @@
-package com.pweb.eventhorizon.service;
+package com.pweb.eventhorizon.security;
 
 import com.pweb.eventhorizon.model.TokenType;
 import com.pweb.eventhorizon.model.dto.AuthenticationRequest;
@@ -8,7 +8,6 @@ import com.pweb.eventhorizon.model.entity.Token;
 import com.pweb.eventhorizon.model.entity.User;
 import com.pweb.eventhorizon.repository.TokenRepository;
 import com.pweb.eventhorizon.repository.UserRepository;
-import com.pweb.eventhorizon.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

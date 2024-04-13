@@ -1,7 +1,7 @@
 package com.pweb.eventhorizon;
 
 import com.pweb.eventhorizon.model.dto.RegisterRequest;
-import com.pweb.eventhorizon.service.AuthenticationService;
+import com.pweb.eventhorizon.security.AuthenticationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
