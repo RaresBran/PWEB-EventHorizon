@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2d80650-d25b-410c-a85f-1224fb13b8cf" name="Changes" comment="Implement jwt security, add swagger ui, create authentication and register endpoints along with some test endpoints">
+    <list default="true" id="b2d80650-d25b-410c-a85f-1224fb13b8cf" name="Changes" comment="Implement user logout">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/TokenType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/entity/Token.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/repository/TokenRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/service/LogoutService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/repository/LocationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/repository/LocationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/JwtAuthenticationFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/security/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pweb/eventhorizon/service/AuthenticationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,11 +101,15 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.pweb.eventhorizon.model" />
       <recent name="com.pweb.eventhorizon.dto" />
       <recent name="com.pweb.eventhorizon.security" />
     </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="com.pweb.eventhorizon.security.SecurityConfiguration" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.pweb.eventhorizon.repository" />
     </key>
   </component>
   <component name="RunManager">
@@ -118,7 +129,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1712498927342</updated>
-      <workItem from="1712498929953" duration="31492000" />
+      <workItem from="1712498929953" duration="35293000" />
     </task>
     <task id="LOCAL-00001" summary="Implement jwt security, add swagger ui, create authentication and register endpoints along with some test endpoints">
       <option name="closed" value="true" />
@@ -128,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712779310918</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add authorities to jwt token and requestMatcher for admin endpoints">
+      <option name="closed" value="true" />
+      <created>1713033625835</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1713033625835</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,6 +158,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Implement jwt security, add swagger ui, create authentication and register endpoints along with some test endpoints" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement jwt security, add swagger ui, create authentication and register endpoints along with some test endpoints" />
+    <MESSAGE value="Add authorities to jwt token and requestMatcher for admin endpoints" />
+    <MESSAGE value="Implement user logout" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement user logout" />
   </component>
 </project>
