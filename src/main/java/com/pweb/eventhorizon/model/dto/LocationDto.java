@@ -1,6 +1,6 @@
-package com.pweb.eventhorizon.model.entity;
+package com.pweb.eventhorizon.model.dto;
 
-import jakarta.persistence.*;
+import com.pweb.eventhorizon.model.City;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,23 +12,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name="locations")
-public class Location {
+public class LocationDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @NotNull(message = "Location city is mandatory")
     @NotEmpty(message = "Location city is mandatory")
-    private String city;
+    private City city;
 
     private String streetAddress;
 
     private String type;
-
-    @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
 }

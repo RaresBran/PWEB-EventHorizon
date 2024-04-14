@@ -16,8 +16,8 @@ import lombok.*;
 public class Token {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @NotNull
     @NotEmpty

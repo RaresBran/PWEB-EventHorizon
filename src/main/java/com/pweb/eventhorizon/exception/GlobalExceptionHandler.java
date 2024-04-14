@@ -1,6 +1,7 @@
 package com.pweb.eventhorizon.exception;
 
 import com.pweb.eventhorizon.exception.exceptions.LogoutException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.pweb.eventhorizon.exception.BusinessErrorCodes.BAD_CREDENTIALS;
-import static com.pweb.eventhorizon.exception.BusinessErrorCodes.LOGOUT_EXCEPTION;
+import static com.pweb.eventhorizon.exception.BusinessErrorCodes.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -22,12 +22,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(LogoutException.class)
     public ResponseEntity<ExceptionResponse> handleException(LogoutException exp) {
         return ResponseEntity
-                .status(UNAUTHORIZED)
+                .status(LOGOUT_EXCEPTION.getCode())
                 .body(
                         ExceptionResponse.builder()
                                 .businessErrorCode(LOGOUT_EXCEPTION.getCode())
                                 .businessErrorDescription(LOGOUT_EXCEPTION.getDescription())
                                 .error(LOGOUT_EXCEPTION.getDescription())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException exp) {
+        return ResponseEntity
+                .status(ENTITY_NOT_FOUND.getCode())
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(ENTITY_NOT_FOUND.getCode())
+                                .businessErrorDescription(ENTITY_NOT_FOUND.getDescription())
+                                .error(ENTITY_NOT_FOUND.getDescription())
                                 .build()
                 );
     }

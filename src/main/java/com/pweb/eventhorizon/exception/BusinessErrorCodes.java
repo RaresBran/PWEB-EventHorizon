@@ -8,9 +8,10 @@ import static org.springframework.http.HttpStatus.*;
 public enum BusinessErrorCodes {
 
     NO_CODE(0, NOT_IMPLEMENTED, "No code"),
-    INCORRECT_CURRENT_PASSWORD(300, BAD_REQUEST, "Current password is incorrect"),
+    INCORRECT_CURRENT_PASSWORD(400, BAD_REQUEST, "Current password is incorrect"),
     BAD_CREDENTIALS(403, FORBIDDEN, "Login and / or password is incorrect"),
-    LOGOUT_EXCEPTION(300, BAD_REQUEST, "Token passed is invalid")
+    LOGOUT_EXCEPTION(400, BAD_REQUEST, "Token passed is invalid"),
+    ENTITY_NOT_FOUND(400, BAD_REQUEST, "Requested entity does not exist")
     ;
 
     @Getter

@@ -19,14 +19,12 @@ import java.util.*;
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @NotNull
     @NotEmpty
     private String name;
-
-    private String type;
 
     private Date startDate;
 
@@ -36,6 +34,16 @@ public class Event {
 
     private String link;
 
-    @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL, mappedBy = "event")
-    private List<Location> locations = new ArrayList<>();
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_category",
+            joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+    )
+    private List<EventCategory> categories;
+
+    @NotNull
+    @NotEmpty
+    @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL, mappedBy = "event", fetch = FetchType.EAGER)
+    private List<Location> locations;
 }

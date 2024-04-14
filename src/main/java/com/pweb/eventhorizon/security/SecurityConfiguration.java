@@ -1,6 +1,5 @@
 package com.pweb.eventhorizon.security;
 
-import com.pweb.eventhorizon.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +43,6 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITELIST).permitAll()
-                        .requestMatchers("/app/admin/**").hasRole(Role.ADMIN.name())
                         .anyRequest()
                         .authenticated()
                 )

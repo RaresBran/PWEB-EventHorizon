@@ -8,27 +8,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="locations")
-public class Location {
+@Table(name="event_categories")
+public class EventCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @NotNull(message = "Location city is mandatory")
-    @NotEmpty(message = "Location city is mandatory")
-    private String city;
+    @NotNull
+    @NotEmpty
+    private String name;
 
-    private String streetAddress;
+    private String description;
 
-    private String type;
-
-    @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
+    @ManyToMany(mappedBy = "categories")
+    private List<Event> events;
 }

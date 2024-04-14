@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TokenRepository extends JpaRepository<Token, Long> {
+public interface TokenRepository extends JpaRepository<Token, String> {
 
-    List<Token> findAllByUserIdAndExpiredFalseAndRevokedFalse(Long userId);
+    List<Token> findAllByUserIdAndExpiredFalseAndRevokedFalse(String userId);
 
     Optional<Token> findByToken(String token);
 }
