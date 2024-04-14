@@ -27,12 +27,12 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
-    @GetMapping("/{userEmail}")
+    @GetMapping("/email/{userEmail}")
     public UserDto getUserByEmail(@PathVariable String userEmail) {
         return userService.getUserByEmail(userEmail);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId}/events")
     public List<EventDto> getUserEventListById(@PathVariable String userId) {
         return userService.getUserEventListById(userId);
     }
