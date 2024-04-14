@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,5 +46,12 @@ public class EventService {
         }
         Event savedEvent = eventRepository.save(event);
         return mapper.map(savedEvent, EventDto.class);
+    }
+
+    public List<EventDto> getAllUpcomingEvents() {
+        List<Event> events = eventRepository.findByStartDateAfter(new Date());
+        return events.stream()
+                .map(event -> mapper.map(event, EventDto.class))
+                .toList();
     }
 }

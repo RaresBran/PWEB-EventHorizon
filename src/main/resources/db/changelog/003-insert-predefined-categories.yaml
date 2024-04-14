@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-predefined-categories
+      author: rares
+      changes:
+        - insert:
+            tableName: event_categories
+            columns:
+              - column:
+                  name: id
+                  value: 687b43ce-2020-494f-86c8-00ccf0b9783e
+                  type: uuid
+              - column:
+                  name: name
+                  value: "Music"
+              - column:
+                  name: description
+                  value: "Events related to musical performances and festivals."
+
+        - insert:
+            tableName: event_categories
+            columns:
+              - column:
+                  name: id
+                  value: 2321df99-53f8-425f-a1b6-2057d028b42e
+                  type: uuid
+              - column:
+                  name: name
+                  value: "Arts"
+              - column:
+                  name: description
+                  value: "Covers a variety of visual arts events, from galleries to live painting."
+
+        - insert:
+            tableName: event_categories
+            columns:
+              - column:
+                  name: id
+                  value: 909372f4-6b26-438c-85a5-9b1ca3af788e
+                  type: uuid
+              - column:
+                  name: name
+                  value: "Theatre"
+              - column:
+                  name: description
+                  value: "Includes all forms of theatrical performances, such as plays and musical theatre."
+
+        - insert:
+            tableName: event_categories
+            columns:
+              - column:
+                  name: id
+                  value: 0cc2e222-0006-4813-a32a-5fc15594c2a8
+                  type: uuid
+              - column:
+                  name: name
+                  value: "Comedy"
+              - column:
+                  name: description
+                  value: "Focuses on stand-up comedy, improv shows, and comedic plays."
+
+        - insert:
+            tableName: event_categories
+            columns:
+              - column:
+                  name: id
+                  value: fc7efc50-b036-4373-bb04-2872a240ac77
+                  type: uuid
+              - column:
+                  name: name
+                  value: "Technology"
+              - column:
+                  name: description
+                  value: "Encompasses tech-oriented events, including conferences and expos related to innovations and tech news."

@@ -1,18 +1,27 @@
 spring:
   application:
     name: eventhorizon
-  datasource:
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: false
     url: jdbc:mysql://localhost:3306/event_horizon
+    user: root
+    password: baxter
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/event_horizon?useSSL=false&serverTimezone=UTC
     username: root
     password: baxter
+
   jpa:
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
+#    show-sql: true
     properties:
-      globally_quoted_identifiers: true
       hibernate:
         format_sql: true
+        globally_quoted_identifiers: true
     database: mysql
     open-in-view: false
 

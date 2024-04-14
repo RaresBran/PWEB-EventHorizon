@@ -16,21 +16,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    @NotEmpty( message = "First name is mandatory")
-    @NotBlank( message = "First name is mandatory")
+    @NotEmpty(message = "First name is mandatory")
+    @NotBlank(message = "First name is mandatory")
     private String firstName;
 
-    @NotEmpty( message = "Last name is mandatory")
-    @NotBlank( message = "Last name is mandatory")
+    @NotEmpty(message = "Last name is mandatory")
+    @NotBlank(message = "Last name is mandatory")
     private String lastName;
 
-    @NotEmpty( message = "Email is mandatory")
-    @NotBlank( message = "Email is mandatory")
+    @NotEmpty(message = "Email is mandatory")
+    @NotBlank(message = "Email is mandatory")
     @Email
     private String email;
 
-    @NotEmpty( message = "Password is mandatory")
-    @NotBlank( message = "Password is mandatory")
+    @NotEmpty(message = "Password is mandatory")
+    @NotBlank(message = "Password is mandatory")
     @Size(min = 8, message = "Password should be 8 characters long minimum")
     private String password;
 

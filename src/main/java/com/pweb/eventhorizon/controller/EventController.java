@@ -18,10 +18,14 @@ public class EventController {
 
     private final EventService eventService;
 
-
     @GetMapping
     public List<EventDto> getAllEvents() {
         return eventService.getAllEvents();
+    }
+
+    @GetMapping("/upcoming")
+    public List<EventDto> getAllUpcomingEvents() {
+        return eventService.getAllUpcomingEvents();
     }
 
     @GetMapping("/{id}")

@@ -1,0 +1,107 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-event-table
+      author: rares
+      changes:
+        - createTable:
+            tableName: events
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: startDate
+                  type: datetime
+              - column:
+                  name: endDate
+                  type: datetime
+              - column:
+                  name: information
+                  type: text
+              - column:
+                  name: link
+                  type: varchar(255)
+
+  - changeSet:
+      id: create-event-category-table
+      author: rares
+      changes:
+        - createTable:
+            tableName: event_categories
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+
+  - changeSet:
+      id: create-location-table
+      author: yourName
+      changes:
+        - createTable:
+            tableName: locations
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: streetAddress
+                  type: varchar(255)
+              - column:
+                  name: type
+                  type: varchar(255)
+              - column:
+                  name: event_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_location_event
+                    references: events(id)
+                    nullable: false
+
+  - changeSet:
+      id: create-event-category-join-table
+      author: yourName
+      changes:
+        - createTable:
+            tableName: event_category
+            columns:
+              - column:
+                  name: event_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: fk_event_category_event
+                    references: events(id)
+              - column:
+                  name: category_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: fk_event_category_category
+                    references: event_categories(id)
