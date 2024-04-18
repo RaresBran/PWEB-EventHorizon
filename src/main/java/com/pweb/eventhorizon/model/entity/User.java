@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.id.uuid.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,6 +27,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @GenericGenerator(name = "UUID", type = UuidGenerator.class)
     private String id;
 
     @Column(nullable=false)

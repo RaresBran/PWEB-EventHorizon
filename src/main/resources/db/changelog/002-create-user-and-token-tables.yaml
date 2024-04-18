@@ -13,12 +13,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: firstName
+                  name: first_name
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: lastName
+                  name: last_name
                   type: varchar(255)
                   constraints:
                     nullable: false
@@ -58,7 +58,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: tokenType
+                  name: token_type
                   type: varchar(255)
               - column:
                   name: expired
@@ -72,3 +72,28 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: fk_token_user
                     references: users(id)
+  - changeSet:
+      id: create-user-event-table
+      author: rares
+      changes:
+        - createTable:
+            tableName: user_event
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_user_event_user
+                    referencedTableName: users
+                    referencedColumnNames: id
+              - column:
+                  name: event_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_user_event_event
+                    referencedTableName: events
+                    referencedColumnNames: id

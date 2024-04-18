@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,7 +32,9 @@ public class SecurityConfiguration {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/h2-console",
+            "/h2-console/**",
     };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -41,6 +44,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .headers(HeadersConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITELIST).permitAll()
                         .anyRequest()

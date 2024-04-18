@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/002-create-user-and-token-tables.yaml
   - include:
       file: db/changelog/003-insert-predefined-categories.yaml
+  - include:
+      file: db/changelog/004-insert-admins.yaml

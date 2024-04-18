@@ -47,4 +47,14 @@ public class UserService {
         User user = userRepository.findByEmail(userEmail).orElseThrow(EntityNotFoundException::new);
         return mapper.map(user, UserDto.class);
     }
+
+    public UserDto deleteEventFromUserList(String userId, String eventId) {
+        Event event = eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+
+        user.getEvents().remove(event);
+        userRepository.save(user);
+
+        return mapper.map(user, UserDto.class);
+    }
 }

@@ -1,0 +1,21 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: true
+    url: jdbc:h2:mem:event_horizon;MODE=MySQL
+    user: sa
+    password:
+
+  datasource:
+    url: jdbc:h2:mem:event_horizon;MODE=MySQL
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true

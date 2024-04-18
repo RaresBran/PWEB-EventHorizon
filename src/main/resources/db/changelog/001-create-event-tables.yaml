@@ -18,10 +18,10 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: startDate
+                  name: start_date
                   type: datetime
               - column:
-                  name: endDate
+                  name: end_date
                   type: datetime
               - column:
                   name: information
@@ -54,7 +54,7 @@ databaseChangeLog:
 
   - changeSet:
       id: create-location-table
-      author: yourName
+      author: rares
       changes:
         - createTable:
             tableName: locations
@@ -71,7 +71,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: streetAddress
+                  name: street_address
                   type: varchar(255)
               - column:
                   name: type
@@ -86,7 +86,7 @@ databaseChangeLog:
 
   - changeSet:
       id: create-event-category-join-table
-      author: yourName
+      author: rares
       changes:
         - createTable:
             tableName: event_category
