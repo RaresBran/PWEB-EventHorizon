@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-event-image-table
+      author: rares
+      changes:
+        - createTable:
+            tableName: event_images
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: event_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: varchar(255)
+              - column:
+                  name: image_data
+                  type: blob
+              - column:
+                  name: upload_date
+                  type: timestamp
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: event_images
+            constraintName: fk_event_images_event
+            referencedColumnNames: id
+            referencedTableName: events

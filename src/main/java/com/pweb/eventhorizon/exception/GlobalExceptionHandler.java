@@ -1,6 +1,7 @@
 package com.pweb.eventhorizon.exception;
 
 import com.pweb.eventhorizon.exception.exceptions.LogoutException;
+import com.pweb.eventhorizon.exception.exceptions.ImageUploadException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,13 +12,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.pweb.eventhorizon.exception.BusinessErrorCodes.*;
+import static com.pweb.eventhorizon.exception.BusinessErrorCodes.BAD_CREDENTIALS;
+import static com.pweb.eventhorizon.exception.BusinessErrorCodes.ENTITY_NOT_FOUND;
+import static com.pweb.eventhorizon.exception.BusinessErrorCodes.IMAGE_UPLOAD_EXCEPTION;
+import static com.pweb.eventhorizon.exception.BusinessErrorCodes.LOGOUT_EXCEPTION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ImageUploadException.class)
+    public ResponseEntity<ExceptionResponse> handleException(ImageUploadException exp) {
+        return ResponseEntity
+                .status(IMAGE_UPLOAD_EXCEPTION.getCode())
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(IMAGE_UPLOAD_EXCEPTION.getCode())
+                                .businessErrorDescription(IMAGE_UPLOAD_EXCEPTION.getDescription())
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
 
     @ExceptionHandler(LogoutException.class)
     public ResponseEntity<ExceptionResponse> handleException(LogoutException exp) {
@@ -27,7 +44,7 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorCode(LOGOUT_EXCEPTION.getCode())
                                 .businessErrorDescription(LOGOUT_EXCEPTION.getDescription())
-                                .error(LOGOUT_EXCEPTION.getDescription())
+                                .error(exp.getMessage())
                                 .build()
                 );
     }
@@ -40,7 +57,7 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorCode(ENTITY_NOT_FOUND.getCode())
                                 .businessErrorDescription(ENTITY_NOT_FOUND.getDescription())
-                                .error(ENTITY_NOT_FOUND.getDescription())
+                                .error(exp.getMessage())
                                 .build()
                 );
     }
@@ -53,7 +70,7 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorCode(BAD_CREDENTIALS.getCode())
                                 .businessErrorDescription(BAD_CREDENTIALS.getDescription())
-                                .error(BAD_CREDENTIALS.getDescription())
+                                .error(exp.getMessage())
                                 .build()
                 );
     }

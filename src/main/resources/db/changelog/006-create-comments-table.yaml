@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-comments-table
+      author: rares
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: event_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+              - column:
+                  name: comment_date
+                  type: timestamp
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: comments
+            constraintName: fk_comments_user
+            referencedColumnNames: id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: comments
+            constraintName: fk_comments_event
+            referencedColumnNames: id
+            referencedTableName: events

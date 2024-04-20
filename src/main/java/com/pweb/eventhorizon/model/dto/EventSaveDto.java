@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDto {
+public class EventSaveDto {
 
     private String id;
 
@@ -30,13 +30,9 @@ public class EventDto {
 
     private String link;
 
-    private List<EventCategoryDto> categories;
+    private List<EventCategoryIdDto> categories;
 
     @NotNull(message = "Event must have at least one location")
     @NotEmpty(message = "Event must have at least one location")
     private List<LocationDto> locations;
-
-    private List<CommentDto> comments;
-
-    private List<EventImageDto> images;
 }

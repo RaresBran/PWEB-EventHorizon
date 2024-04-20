@@ -2,26 +2,18 @@ spring:
   application:
     name: eventhorizon
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
     enabled: true
     url: jdbc:mysql://localhost:3306/event_horizon
     user: root
     password: baxter
-
-#  # H2 Database settings for testing
-#  datasource:
-#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-#    driverClassName: org.h2.Driver
-#    username: sa
-#    password:
-#  jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
-#    hibernate:
-#      ddl-auto: create-drop  # Optionally set for tests to automatically manage schema
-#  h2:
-#    console:
-#      enabled: true
 
   # MySQL Database settings
   datasource:
@@ -42,8 +34,13 @@ spring:
     database: mysql
     open-in-view: false
 
+
 application:
   security:
     jwt:
       secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
       expiration: 8640000
+
+server:
+  tomcat:
+    max-swallow-size: 100MB

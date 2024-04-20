@@ -1,6 +1,5 @@
 package com.pweb.eventhorizon.model.dto;
 
-import com.pweb.eventhorizon.model.entity.Event;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Email;
@@ -9,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,5 +29,7 @@ public class UserDto {
     @Email
     private String email;
 
-    private Set<EventDto> events;
+    private List<EventDto> events;
+
+    private List<CommentDto> comments;
 }

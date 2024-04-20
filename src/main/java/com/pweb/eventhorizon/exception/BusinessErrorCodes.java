@@ -11,6 +11,7 @@ public enum BusinessErrorCodes {
     INCORRECT_CURRENT_PASSWORD(400, BAD_REQUEST, "Current password is incorrect"),
     BAD_CREDENTIALS(403, FORBIDDEN, "Login and / or password is incorrect"),
     LOGOUT_EXCEPTION(400, BAD_REQUEST, "Token passed is invalid"),
+    IMAGE_UPLOAD_EXCEPTION(417, EXPECTATION_FAILED, "Image is invalid"),
     ENTITY_NOT_FOUND(400, BAD_REQUEST, "Requested entity does not exist")
     ;
 

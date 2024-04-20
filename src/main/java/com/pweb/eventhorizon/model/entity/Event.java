@@ -57,4 +57,10 @@ public class Event {
     @Column(nullable=false)
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL, mappedBy = "event", fetch = FetchType.EAGER)
     private List<Location> locations;
+
+    @OneToMany(mappedBy = "event")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "event")
+    private List<EventImage> images;
 }
