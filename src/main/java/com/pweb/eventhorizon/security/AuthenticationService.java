@@ -1,5 +1,6 @@
 package com.pweb.eventhorizon.security;
 
+import com.pweb.eventhorizon.model.Role;
 import com.pweb.eventhorizon.model.TokenType;
 import com.pweb.eventhorizon.model.dto.AuthenticationRequest;
 import com.pweb.eventhorizon.model.dto.AuthenticationResponse;
@@ -48,7 +49,7 @@ public class AuthenticationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(Role.USER)
                 .build();
 
         var savedUser = userRepository.save(user);

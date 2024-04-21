@@ -1,22 +1,34 @@
 package com.pweb.eventhorizon.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pweb.eventhorizon.model.City;
 import com.pweb.eventhorizon.model.dto.EventDto;
+import com.pweb.eventhorizon.model.dto.EventImageDto;
 import com.pweb.eventhorizon.model.dto.EventSaveDto;
 import com.pweb.eventhorizon.model.entity.EventImage;
 import com.pweb.eventhorizon.service.EventImageService;
 import com.pweb.eventhorizon.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/app/event")
@@ -26,6 +38,7 @@ public class EventController {
 
     private final EventService eventService;
     private final EventImageService eventImageService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping
     public List<EventDto> getAllEvents() {
@@ -48,7 +61,7 @@ public class EventController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public EventDto saveEvent(@RequestBody @Valid EventSaveDto event) {
         return eventService.saveEvent(event);
     }
@@ -61,8 +74,8 @@ public class EventController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Upload a photo for a specific event")
-    @PostMapping(value = "/{eventId}", consumes = {"multipart/form-data"})
+    @Operation(summary = "Upload an image for a specific event")
+    @PostMapping(value = "/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadImageForEventId(
             @Parameter(description = "Image to be uploaded", required = true) @RequestParam("file") MultipartFile file,
             @PathVariable String eventId
@@ -72,16 +85,19 @@ public class EventController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(consumes = "multipart/form-data")
+    @Operation(summary = "Upload an event along with images")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public EventDto saveEventWithImages(
-            @RequestPart("event") String eventJson,
-            @Parameter(description = "Images to be uploaded", required = true) @RequestPart("files") MultipartFile[] files
+            @Parameter(description = "Event data", required = true,
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventSaveDto.class))) @RequestPart String eventDto,
+            @Parameter(description = "Files to be uploaded", required = true,
+                    content = @Content(mediaType = "image/jpeg", schema = @Schema(type = "string", format = "binary"))) @RequestPart("files") List<MultipartFile> files
     ) {
-        return eventService.saveEventWithImages(eventJson, files);
+        return eventService.saveEventWithImages(objectMapper.convertValue(eventDto, EventSaveDto.class), files);
     }
 
     @GetMapping("/{eventId}/images")
-    public Set<EventImage> getEventImages(@PathVariable String eventId) {
+    public List<EventImageDto> getEventImages(@PathVariable String eventId) {
         return eventImageService.getEventImages(eventId);
     }
 }

@@ -16,6 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDto {
 
+    private String id;
+
     @NotEmpty(message = "First name is mandatory")
     @NotBlank(message = "First name is mandatory")
     private String firstName;

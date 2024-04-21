@@ -1,7 +1,5 @@
 package com.pweb.eventhorizon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pweb.eventhorizon.exception.exceptions.ImageUploadException;
 import com.pweb.eventhorizon.model.City;
 import com.pweb.eventhorizon.model.dto.EventDto;
 import com.pweb.eventhorizon.model.dto.EventSaveDto;
@@ -27,7 +25,6 @@ public class EventService {
     private final EventRepository eventRepository;
     private final EventImageService eventImageService;
     private final EventCategoryRepository eventCategoryRepository;
-    private final ObjectMapper objectMapper;
     private final ModelMapper modelMapper;
 
     public EventDto getEventById(String id) {
@@ -71,17 +68,10 @@ public class EventService {
                 .toList();
     }
 
-    public EventDto saveEventWithImages(String eventJson, MultipartFile[] files) {
-        try {
-            EventSaveDto eventSaveDto = objectMapper.readValue(eventJson, EventSaveDto.class);
-            Event savedEvent = eventRepository.save(modelMapper.map(eventSaveDto, Event.class));
-
-            eventImageService.uploadEventImages(savedEvent, files);
-
-            return modelMapper.map(savedEvent, EventDto.class);
-        } catch (Exception e) {
-            throw new ImageUploadException("Failed to save event or upload images", e);
-        }
+    public EventDto saveEventWithImages(EventSaveDto event, List<MultipartFile> files) {
+        Event savedEvent = eventRepository.save(modelMapper.map(event, Event.class));
+        eventImageService.uploadEventImages(savedEvent, files);
+        return modelMapper.map(savedEvent, EventDto.class);
     }
 
     public void deleteEvent(String id) {

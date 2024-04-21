@@ -1,21 +1,20 @@
 package com.pweb.eventhorizon.service;
 
 import com.pweb.eventhorizon.exception.exceptions.ImageUploadException;
+import com.pweb.eventhorizon.model.dto.EventImageDto;
 import com.pweb.eventhorizon.model.entity.Event;
 import com.pweb.eventhorizon.model.entity.EventImage;
 import com.pweb.eventhorizon.repository.EventImageRepository;
 import com.pweb.eventhorizon.repository.EventRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +23,7 @@ public class EventImageService {
 
     private final EventRepository eventRepository;
     private final EventImageRepository eventImageRepository;
+    private final ModelMapper modelMapper;
 
     public EventImage uploadEventImage(String eventId, MultipartFile file) {
         Event event = eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
@@ -35,7 +35,7 @@ public class EventImageService {
         return eventImage;
     }
 
-    public Set<EventImage> uploadEventImages(Event event, MultipartFile[] files) {
+    public Set<EventImage> uploadEventImages(Event event, List<MultipartFile> files) {
         Set<EventImage> images = new HashSet<>();
         for (MultipartFile file : files) {
             EventImage eventImage = saveEventImage(event, file);
@@ -47,8 +47,11 @@ public class EventImageService {
     }
 
     @Transactional(readOnly = true)
-    public Set<EventImage> getEventImages(String eventId) {
-        return eventImageRepository.findByEventId(eventId);
+    public List<EventImageDto> getEventImages(String eventId) {
+        List<EventImage> eventImages = eventImageRepository.findByEventId(eventId);
+        return eventImages.stream()
+                .map(image -> modelMapper.map(image, EventImageDto.class))
+                .toList();
     }
 
     private EventImage saveEventImage(Event event, MultipartFile file) {

@@ -3,6 +3,7 @@ package com.pweb.eventhorizon.exception;
 import com.pweb.eventhorizon.exception.exceptions.LogoutException;
 import com.pweb.eventhorizon.exception.exceptions.ImageUploadException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,16 +13,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.pweb.eventhorizon.exception.BusinessErrorCodes.BAD_CREDENTIALS;
-import static com.pweb.eventhorizon.exception.BusinessErrorCodes.ENTITY_NOT_FOUND;
-import static com.pweb.eventhorizon.exception.BusinessErrorCodes.IMAGE_UPLOAD_EXCEPTION;
-import static com.pweb.eventhorizon.exception.BusinessErrorCodes.LOGOUT_EXCEPTION;
+import static com.pweb.eventhorizon.exception.BusinessErrorCodes.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<ExceptionResponse> handleException(DataIntegrityViolationException exp) {
+        return ResponseEntity
+                .status(INVALID_DATA_FORMAT.getCode())
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(INVALID_DATA_FORMAT.getCode())
+                                .businessErrorDescription(INVALID_DATA_FORMAT.getDescription())
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
 
     @ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<ExceptionResponse> handleException(ImageUploadException exp) {

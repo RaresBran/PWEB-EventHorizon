@@ -15,10 +15,6 @@ public class CommentDto {
 
     private String id;
 
-    private UserDto user;
-
-    private EventDto event;
-
     private String content;
 
     private Date commentDate;

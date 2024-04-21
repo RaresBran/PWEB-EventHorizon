@@ -26,7 +26,7 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
 
         user.getEvents().add(event);
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         return mapper.map(user, UserDto.class);
     }
