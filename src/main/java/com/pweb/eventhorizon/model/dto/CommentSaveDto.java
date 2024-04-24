@@ -13,8 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class CommentSaveDto {
 
-    private String userId;
-
     private String eventId;
 
     private String content;

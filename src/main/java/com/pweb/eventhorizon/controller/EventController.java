@@ -1,6 +1,8 @@
 package com.pweb.eventhorizon.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pweb.eventhorizon.exception.exceptions.ImageUploadException;
 import com.pweb.eventhorizon.model.City;
 import com.pweb.eventhorizon.model.dto.EventDto;
 import com.pweb.eventhorizon.model.dto.EventImageDto;
@@ -14,6 +16,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,13 +45,13 @@ public class EventController {
     private final ObjectMapper objectMapper;
 
     @GetMapping
-    public List<EventDto> getAllEvents() {
-        return eventService.getAllEvents();
+    public Page<EventDto> getAllEvents(Pageable pageable) {
+        return eventService.getAllEvents(pageable);
     }
 
     @GetMapping("/upcoming")
-    public List<EventDto> getAllUpcomingEvents() {
-        return eventService.getAllUpcomingEvents();
+    public Page<EventDto> getAllUpcomingEvents(Pageable pageable) {
+        return eventService.getAllUpcomingEvents(pageable);
     }
 
     @GetMapping("/{id}")
@@ -56,8 +60,8 @@ public class EventController {
     }
 
     @GetMapping("/city/{city}")
-    public List<EventDto> getEventsByCity(@PathVariable @Valid City city) {
-        return eventService.getEventsByCity(city);
+    public Page<EventDto> getEventsByCity(@PathVariable @Valid City city, Pageable pageable) {
+        return eventService.getEventsByCity(city, pageable);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -93,7 +97,11 @@ public class EventController {
             @Parameter(description = "Files to be uploaded", required = true,
                     content = @Content(mediaType = "image/jpeg", schema = @Schema(type = "string", format = "binary"))) @RequestPart("files") List<MultipartFile> files
     ) {
-        return eventService.saveEventWithImages(objectMapper.convertValue(eventDto, EventSaveDto.class), files);
+        try {
+            return eventService.saveEventWithImages(objectMapper.readValue(eventDto, EventSaveDto.class), files);
+        } catch (JsonProcessingException e) {
+            throw new ImageUploadException(e);
+        }
     }
 
     @GetMapping("/{eventId}/images")

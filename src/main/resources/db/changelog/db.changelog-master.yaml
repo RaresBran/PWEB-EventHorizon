@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/005-create-event-image-table.yaml
   - include:
       file: db/changelog/006-create-comments-table.yaml
+  - include:
+      file: db/changelog/007-create-feedback-table.yaml

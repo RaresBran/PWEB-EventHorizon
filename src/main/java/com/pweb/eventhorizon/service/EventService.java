@@ -8,10 +8,12 @@ import com.pweb.eventhorizon.model.entity.Location;
 import com.pweb.eventhorizon.repository.EventCategoryRepository;
 import com.pweb.eventhorizon.repository.EventRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -19,7 +21,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class EventService {
 
     private final EventRepository eventRepository;
@@ -32,48 +33,47 @@ public class EventService {
         return modelMapper.map(event, EventDto.class);
     }
 
-    public List<EventDto> getAllEvents() {
-        List<Event> events = eventRepository.findAll();
-        return events.stream()
-                .map(event -> modelMapper.map(event, EventDto.class))
-                .toList();
+    public Page<EventDto> getAllEvents(Pageable pageable) {
+        Page<Event> events = eventRepository.findAll(pageable);
+        return events.map(event -> modelMapper.map(event, EventDto.class));
     }
 
-    public List<EventDto> getEventsByCity(City city) {
-        List<Event> events = eventRepository.findAllByLocations_City(city.name());
-        return events.stream()
-                .map(event -> modelMapper.map(event, EventDto.class))
-                .toList();
+    public Page<EventDto> getEventsByCity(City city, Pageable pageable) {
+        Page<Event> events = eventRepository.findAllByLocations_City(city.name(), pageable);
+        return events.map(event -> modelMapper.map(event, EventDto.class));
     }
 
     public EventDto saveEvent(EventSaveDto eventDto) {
+        Event savedEvent = saveEventToRepository(eventDto);
+        return modelMapper.map(savedEvent, EventDto.class);
+    }
+
+    public Page<EventDto> getAllUpcomingEvents(Pageable pageable) {
+        Page<Event> events = eventRepository.findByStartDateAfter(new Date(), pageable);
+        return events.map(event -> modelMapper.map(event, EventDto.class));
+    }
+
+    public EventDto saveEventWithImages(EventSaveDto eventDto, List<MultipartFile> files) {
+        Event savedEvent = saveEventToRepository(eventDto);
+        eventImageService.uploadEventImages(savedEvent, files);
+        return modelMapper.map(savedEvent, EventDto.class);
+    }
+
+    private Event saveEventToRepository(EventSaveDto eventDto) {
         Event event = modelMapper.map(eventDto, Event.class);
         for (Location location : event.getLocations()) {
             location.setEvent(event);
         }
         event.setCategories(
                 event
-                    .getCategories().stream()
-                    .map(eventCategory -> eventCategoryRepository.findById(eventCategory.getId()).orElseThrow(EntityNotFoundException::new))
-                    .toList()
+                        .getCategories().stream()
+                        .map(eventCategory -> eventCategoryRepository.findById(eventCategory.getId()).orElseThrow(EntityNotFoundException::new))
+                        .toList()
         );
-        Event savedEvent = eventRepository.save(event);
-        return modelMapper.map(savedEvent, EventDto.class);
+        return eventRepository.save(event);
     }
 
-    public List<EventDto> getAllUpcomingEvents() {
-        List<Event> events = eventRepository.findByStartDateAfter(new Date());
-        return events.stream()
-                .map(event -> modelMapper.map(event, EventDto.class))
-                .toList();
-    }
-
-    public EventDto saveEventWithImages(EventSaveDto event, List<MultipartFile> files) {
-        Event savedEvent = eventRepository.save(modelMapper.map(event, Event.class));
-        eventImageService.uploadEventImages(savedEvent, files);
-        return modelMapper.map(savedEvent, EventDto.class);
-    }
-
+    @Transactional
     public void deleteEvent(String id) {
         eventRepository.deleteById(id);
     }

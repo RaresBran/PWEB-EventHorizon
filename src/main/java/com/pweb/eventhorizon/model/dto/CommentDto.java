@@ -18,4 +18,6 @@ public class CommentDto {
     private String content;
 
     private Date commentDate;
+
+    private boolean canDelete;
 }

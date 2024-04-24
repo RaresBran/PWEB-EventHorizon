@@ -5,6 +5,7 @@ import com.pweb.eventhorizon.model.dto.UserDto;
 import com.pweb.eventhorizon.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,30 +18,23 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/{userId}/{eventId}")
-    public UserDto addEventToUserList(@PathVariable String userId, @PathVariable String eventId) {
-        return userService.addEventToList(userId, eventId);
+    @PostMapping("/events/{eventId}")
+    public UserDto addEventToUserList(Authentication authentication, @PathVariable String eventId) {
+        return userService.addEventToList(authentication, eventId);
     }
 
-    @DeleteMapping("/{userId}/{eventId}")
-    public UserDto deleteEventFromUserList(@PathVariable String userId, @PathVariable String eventId) {
-        return userService.deleteEventFromUserList(userId, eventId);
+    @DeleteMapping("/events/{eventId}")
+    public UserDto removeEventFromUserList(Authentication authentication, @PathVariable String eventId) {
+        return userService.removeEventFromUserList(authentication, eventId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable String userId) {
-        return userService.getUserById(userId);
+    @GetMapping()
+    public UserDto getCurrentUser(Authentication authentication) {
+        return userService.getCurrentUser(authentication);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/email/{userEmail}")
-    public UserDto getUserByEmail(@PathVariable String userEmail) {
-        return userService.getUserByEmail(userEmail);
-    }
-
-    @GetMapping("/{userId}/events")
-    public List<EventDto> getUserEventListById(@PathVariable String userId) {
-        return userService.getUserEventListById(userId);
+    @GetMapping("/events")
+    public List<EventDto> getCurrentUserEventList(Authentication authentication) {
+        return userService.getCurrentUserEventList(authentication);
     }
 }

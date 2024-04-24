@@ -5,13 +5,11 @@ import com.pweb.eventhorizon.repository.EventCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class EventCategoryService {
 
     private final EventCategoryRepository eventCategoryRepository;

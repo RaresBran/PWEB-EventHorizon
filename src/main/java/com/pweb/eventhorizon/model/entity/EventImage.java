@@ -32,6 +32,7 @@ public class EventImage {
     @Column(name = "image_data", columnDefinition="BLOB")
     private byte[] imageData;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "upload_date")
     private Date uploadDate;
 }

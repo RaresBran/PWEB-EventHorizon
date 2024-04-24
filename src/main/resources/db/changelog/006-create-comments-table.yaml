@@ -34,9 +34,11 @@ databaseChangeLog:
             constraintName: fk_comments_user
             referencedColumnNames: id
             referencedTableName: users
+            onDelete: "CASCADE"
         - addForeignKeyConstraint:
             baseColumnNames: event_id
             baseTableName: comments
             constraintName: fk_comments_event
             referencedColumnNames: id
             referencedTableName: events
+            onDelete: "CASCADE"

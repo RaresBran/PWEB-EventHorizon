@@ -1,17 +1,6 @@
 package com.pweb.eventhorizon.model.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.id.uuid.UuidGenerator;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,15 +28,17 @@ public class Event {
     @Column(nullable=false)
     private String name;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
     private String information;
 
     private String link;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "event_category",
             joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
@@ -58,9 +50,9 @@ public class Event {
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL, mappedBy = "event", fetch = FetchType.EAGER)
     private List<Location> locations;
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private List<EventImage> images;
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<EventImage> images = new ArrayList<>();
 }

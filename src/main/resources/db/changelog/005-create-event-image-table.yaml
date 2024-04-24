@@ -32,3 +32,4 @@ databaseChangeLog:
             constraintName: fk_event_images_event
             referencedColumnNames: id
             referencedTableName: events
+            onDelete: "CASCADE"

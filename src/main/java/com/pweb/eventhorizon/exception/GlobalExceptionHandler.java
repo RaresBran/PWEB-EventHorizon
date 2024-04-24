@@ -5,6 +5,7 @@ import com.pweb.eventhorizon.exception.exceptions.ImageUploadException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +22,20 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({DataIntegrityViolationException.class})
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(AccessDeniedException exp) {
+        return ResponseEntity
+                .status(ACCESS_DENIED.getCode())
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(ACCESS_DENIED.getCode())
+                                .businessErrorDescription(ACCESS_DENIED.getDescription())
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ExceptionResponse> handleException(DataIntegrityViolationException exp) {
         return ResponseEntity
                 .status(INVALID_DATA_FORMAT.getCode())
