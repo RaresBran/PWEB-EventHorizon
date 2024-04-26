@@ -40,4 +40,4 @@ databaseChangeLog:
               - column:
                   name: submitted_at
                   type: timestamp
-                  defaultValue: "CURRENT_TIMESTAMP"
+                  defaultValueComputed: CURRENT_TIMESTAMP
