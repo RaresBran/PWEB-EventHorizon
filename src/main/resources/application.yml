@@ -13,20 +13,17 @@ spring:
     enabled: true
     url: jdbc:mysql://localhost:3306/event_horizon
     user: root
-    password: baxter
+    password: root
 
   # MySQL Database settings
   datasource:
     url: jdbc:mysql://localhost:3306/event_horizon?useSSL=false&serverTimezone=UTC
-    driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: baxter
+    password: root
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
-#    show-sql: true
     properties:
       hibernate:
         format_sql: true
