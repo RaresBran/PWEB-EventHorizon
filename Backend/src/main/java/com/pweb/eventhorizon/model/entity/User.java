@@ -46,7 +46,7 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Token> tokens;
+    private transient List<Token> tokens;
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -54,10 +54,10 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id")
     )
-    private List<Event> events;
+    private transient List<Event> events;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    private transient List<Comment> comments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
