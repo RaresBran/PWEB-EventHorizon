@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand ms-lg-3" href="#" routerLink="/dashboard">Event Horizon</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/city/bucharest">Bucharest</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/city/cluj_napoca">Cluj-Napoca</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/city/brasov">Brasov</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto">
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link font-weight-bold text-primary" routerLink="/my-events">My Events</a>
+      </li>
+      <li class="nav-item dropdown" *ngIf="isLoggedIn">
+        <button class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user"></i> {{ userName }}
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          <a class="dropdown-item" href="#" (click)="logout()">Sign Out</a>
+        </div>
+      </li>
+      <li class="nav-item" *ngIf="!isLoggedIn">
+        <a class="nav-link" href="#" routerLink="/login">
+          Sign in
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

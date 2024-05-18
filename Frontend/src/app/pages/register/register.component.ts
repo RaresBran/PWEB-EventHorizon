@@ -1,36 +1,40 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../services/services/authentication.service';
-import {AuthenticationRequest} from '../../models/authentication-request';
+import {RegisterRequest} from "../../models/register-request";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
+  selector: 'app-register',
+  templateUrl: './register.component.html',
   standalone: true,
   imports: [
     FormsModule,
     CommonModule
   ],
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./register.component.scss']
 })
-export class LoginComponent {
+export class RegisterComponent {
 
-  authRequest: AuthenticationRequest = {email: '', password: ''};
+  registerRequest: RegisterRequest = {email: '', firstName: '', lastName: '', password: ''};
   errorMsg: Array<string> = [];
 
   constructor(
     private router: Router,
-    private authService: AuthenticationService,
+    private authService: AuthenticationService
   ) {
   }
 
   login() {
+    this.router.navigate(['login']).then();
+  }
+
+  register() {
     this.errorMsg = [];
-    this.authService.authenticate(this.authRequest)
+    this.authService.register(this.registerRequest)
       .subscribe({
-        next: (res) => {
+        next: () => {
           this.router.navigate(['dashboard']).then();
         },
         error: (err) => {
@@ -42,9 +46,5 @@ export class LoginComponent {
           }
         }
       });
-  }
-
-  register() {
-    this.router.navigate(['register']).then();
   }
 }

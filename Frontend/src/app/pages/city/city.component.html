@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Events in {{ city }}</h2>
+    <div *ngIf="isAdmin">
+      <button class="btn btn-success" (click)="addEvent()">Add Event</button>
+    </div>
+  </div>
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Search events..." [(ngModel)]="searchQuery"
+           (ngModelChange)="searchEvents()">
+  </div>
+  <div class="row">
+    <div class="col-md-6" *ngFor="let event of events">
+      <div class="card mb-4">
+        <img *ngIf="event.images?.length" ngSrc="event.images[0]?.imageData" class="card-img-top" alt="{{ event.name }}"
+             fill>
+        <div class="card-body">
+          <h5 class="card-title">{{ event.name }}</h5>
+          <p class="card-text">{{ event.startDate | date:'longDate' }} - {{ event.endDate | date:'longDate' }}</p>
+          <div *ngIf="event.locations?.length">
+            <p class="card-text">{{ event.locations[0].streetAddress }}</p>
+          </div>
+          <button class="btn btn-primary" (click)="viewEvent(event.id)">View Details</button>
+          <button class="btn btn-primary" (click)="addToMyList(event.id)" *ngIf="isLoggedIn && !isAdmin">Add to My
+            List
+          </button>
+          <button class="btn btn-warning" (click)="editEvent(event.id)" *ngIf="isAdmin">Edit</button>
+          <button class="btn btn-danger" (click)="deleteEvent(event.id)" *ngIf="isAdmin">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav *ngIf="events?.length">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="page === 0" (click)="onPageChange(page - 1)">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let p of [].constructor(getTotalPages()); let i = index" [class.active]="i === page"
+          (click)="onPageChange(i)">
+        <a class="page-link">{{ i + 1 }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="page === getTotalPages() - 1" (click)="onPageChange(page + 1)">
+        <a class="page-link">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

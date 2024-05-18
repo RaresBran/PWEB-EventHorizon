@@ -1,0 +1,51 @@
+<div class="container mt-4" *ngIf="event">
+  <div class="row">
+    <div class="col-md-8">
+      <h2>{{ event.name }}</h2>
+      <p class="text-muted">{{ event.startDate | date:'longDate' }} - {{ event.endDate | date:'longDate' }}</p>
+      <div *ngIf="event.images?.length">
+        <div *ngFor="let image of event.images" class="mb-2">
+          <img [src]="image.imageData" class="img-fluid" alt="{{ event.name }}">
+        </div>
+      </div>
+      <p>{{ event.information }}</p>
+      <div *ngIf="event.link">
+        <a [href]="event.link" target="_blank" class="btn btn-link">More Info</a>
+      </div>
+      <div *ngIf="event.locations?.length">
+        <h5>Locations</h5>
+        <ul>
+          <li *ngFor="let location of event.locations">{{ location.streetAddress }}</li>
+        </ul>
+      </div>
+      <div *ngIf="event.categories?.length">
+        <h5>Categories</h5>
+        <ul>
+          <li *ngFor="let category of event.categories">{{ category.name }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div *ngIf="isLoggedIn">
+        <button class="btn btn-primary mb-2" (click)="addToMyList()" *ngIf="!isAdmin">Add to My List</button>
+        <button class="btn btn-warning mb-2" (click)="editEvent()" *ngIf="isAdmin">Edit Event</button>
+        <button class="btn btn-danger mb-2" (click)="deleteEvent()" *ngIf="isAdmin">Delete Event</button>
+      </div>
+      <div *ngIf="!isLoggedIn">
+        <p><a href="#" routerLink="/login">Sign in</a> to manage events.</p>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4" *ngIf="event.comments?.length">
+    <div class="col-12">
+      <h5>Comments</h5>
+      <div *ngFor="let comment of event.comments" class="card mb-2">
+        <div class="card-body">
+          <h6 class="card-title">{{ comment.id }}</h6>
+          <p class="card-text">{{ comment.content }}</p>
+          <p class="text-muted">{{ comment.commentDate | date:'short' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

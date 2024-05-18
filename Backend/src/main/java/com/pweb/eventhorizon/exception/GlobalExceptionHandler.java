@@ -37,16 +37,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ExceptionResponse> handleException(DataIntegrityViolationException exp) {
+        String errorMessage = INVALID_DATA_FORMAT.getDescription();
+
+        if (exp.getCause() instanceof org.hibernate.exception.ConstraintViolationException constraintViolationException) {
+            String constraintMessage = constraintViolationException.getSQLException().getMessage();
+
+            // Check if the constraint violation is due to a unique constraint on the email field
+            if (constraintMessage != null && constraintMessage.contains("email")) {
+                errorMessage = "User already exists!";
+            }
+        }
+
         return ResponseEntity
                 .status(INVALID_DATA_FORMAT.getCode())
                 .body(
                         ExceptionResponse.builder()
                                 .businessErrorCode(INVALID_DATA_FORMAT.getCode())
-                                .businessErrorDescription(INVALID_DATA_FORMAT.getDescription())
+                                .businessErrorDescription(errorMessage)
                                 .error(exp.getMessage())
                                 .build()
                 );
     }
+
 
     @ExceptionHandler(ImageUploadException.class)
     public ResponseEntity<ExceptionResponse> handleException(ImageUploadException exp) {

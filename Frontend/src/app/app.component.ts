@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterModule, RouterOutlet} from '@angular/router';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import {NavbarComponent} from "./shared/navbar/navbar.component";
+import {TokenInterceptor} from "./services/services/token.interceptor";
 
 @Component({
   selector: 'app-root',
@@ -11,6 +13,7 @@ import {FormsModule} from "@angular/forms";
     RouterOutlet,
     RouterModule,
     HttpClientModule,
+    NavbarComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

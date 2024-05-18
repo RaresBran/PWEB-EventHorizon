@@ -1,74 +1,73 @@
-/* tslint:disable */
-/* eslint-disable */
-import { HttpClient, HttpContext } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable, OnInit} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {BehaviorSubject, Observable} from 'rxjs';
+import { tap } from 'rxjs/operators';
+import {ApiConfiguration} from "../api-configuration";
+import {AuthenticationRequest} from "../../models/authentication-request";
+import {AuthenticationResponse} from "../../models/authentication-response";
+import {RegisterRequest} from "../../models/register-request";
+import {TokenService} from "./token.service";
+import {UserDto} from "../../models/user-dto";
 
-import { BaseService } from '../base-service';
-import { ApiConfiguration } from '../api-configuration';
-import { StrictHttpResponse } from '../strict-http-response';
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthenticationService implements OnInit {
+  private baseUrl: string = `${this.apiConfiguration.rootUrl}/app/auth`;
+  private authState = new BehaviorSubject<boolean>(this.tokenService.hasToken());
 
-import { authenticate } from '../fn/authentication-controller/authenticate';
-import { Authenticate$Params } from '../fn/authentication-controller/authenticate';
-import { AuthenticationResponse } from '../models/authentication-response';
-import { register } from '../fn/authentication-controller/register';
-import { Register$Params } from '../fn/authentication-controller/register';
+  constructor(
+    private http: HttpClient,
+    private apiConfiguration: ApiConfiguration,
+    private tokenService: TokenService,
+  ) { }
 
-@Injectable({ providedIn: 'root' })
-export class AuthenticationService extends BaseService {
-  constructor(config: ApiConfiguration, http: HttpClient) {
-    super(config, http);
+  ngOnInit(): void {
+    if (this.tokenService.hasToken() && this.tokenService.isTokenValid(this.tokenService.getToken())) {
+      this.authState.next(true);
+    }
   }
 
-  /** Path part for operation `register()` */
-  static readonly RegisterPath = '/app/auth/register';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `register()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  register$Response(params: Register$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthenticationResponse>> {
-    return register(this.http, this.rootUrl, params, context);
+  authenticate(request: AuthenticationRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`${this.baseUrl}/authenticate`, request)
+      .pipe(
+        tap(response => this.handleAuthResponse(response))
+      );
   }
 
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `register$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  register(params: Register$Params, context?: HttpContext): Observable<AuthenticationResponse> {
-    return this.register$Response(params, context).pipe(
-      map((r: StrictHttpResponse<AuthenticationResponse>): AuthenticationResponse => r.body)
-    );
+  register(request: RegisterRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`${this.baseUrl}/register`, request)
+      .pipe(
+        tap(response => this.handleAuthResponse(response))
+      );
   }
 
-  /** Path part for operation `authenticate()` */
-  static readonly AuthenticatePath = '/app/auth/authenticate';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `authenticate()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  authenticate$Response(params: Authenticate$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthenticationResponse>> {
-    return authenticate(this.http, this.rootUrl, params, context);
+  logout(): Observable<void> {
+    const token = this.tokenService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<void>(`${this.baseUrl}/logout`, {}, { headers })
+      .pipe(
+        tap(() => {
+          this.tokenService.clearToken()
+          this.authState.next(false);
+        })
+      );
   }
 
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `authenticate$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  authenticate(params: Authenticate$Params, context?: HttpContext): Observable<AuthenticationResponse> {
-    return this.authenticate$Response(params, context).pipe(
-      map((r: StrictHttpResponse<AuthenticationResponse>): AuthenticationResponse => r.body)
-    );
+  getCurrentUser(): Observable<UserDto> {
+    const token = this.tokenService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<UserDto>(`${this.apiConfiguration.rootUrl}/app/user`, { headers });
   }
 
+  private handleAuthResponse(response: AuthenticationResponse): void {
+    if (response.token !== undefined && this.tokenService.isTokenValid(response.token)) {
+      this.tokenService.setToken(response.token ?? '');
+      this.authState.next(true);
+    }
+  }
+
+  isAuthenticated(): Observable<boolean> {
+    return this.authState.asObservable();
+  }
 }

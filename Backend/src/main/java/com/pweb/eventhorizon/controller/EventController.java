@@ -36,7 +36,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app/event")
-@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 @RequiredArgsConstructor
 public class EventController {
 
