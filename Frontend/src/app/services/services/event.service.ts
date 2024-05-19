@@ -29,6 +29,10 @@ export class EventService {
     return this.http.post<EventDto>(this.baseUrl, event);
   }
 
+  saveEventWithImages(formData: FormData): Observable<EventDto> {
+    return this.http.post<EventDto>(this.baseUrl, formData);
+  }
+
   deleteEvent(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
@@ -39,5 +43,9 @@ export class EventService {
 
   removeEventFromUserList(eventId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiConfiguration.rootUrl}/app/user/events/${eventId}`);
+  }
+
+  getCurrentUserEventList(): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(`${this.apiConfiguration.rootUrl}/app/user/events`);
   }
 }

@@ -9,26 +9,32 @@ import {TokenService} from "../services/token.service";
   providedIn: 'root'
 })
 export class UserStoreService {
-  private userSubject = new BehaviorSubject<UserDto>({} as UserDto);
-  public user$: Observable<UserDto> = this.userSubject.asObservable();
+  private userSubject = new BehaviorSubject<UserDto | null>(null);
+  public user$: Observable<UserDto | null> = this.userSubject.asObservable();
 
   constructor(private authService: AuthenticationService, private tokenService: TokenService) {
     this.loadCurrentUser();
   }
 
   private loadCurrentUser(): void {
-    this.authService.getCurrentUser().pipe(
-      tap(user => this.userSubject.next(user))
-    ).subscribe();
+    this.authService.isAuthenticated().subscribe(status => {
+      if (status) {
+        this.authService.getCurrentUser().pipe(
+          tap(user => this.userSubject.next(user))
+        ).subscribe();
+      } else {
+        this.userSubject.next(null);
+      }
+    })
   }
 
-  getCurrentUser(): Observable<UserDto> {
+  getCurrentUser(): Observable<UserDto | null> {
     return this.user$;
   }
 
   isAdmin(): boolean {
     const user = this.userSubject.getValue();
-    return user && this.tokenService.getUserRoles().includes('ROLE_ADMIN');
+    return (user ?? false) && this.tokenService.getUserRoles().includes('ROLE_ADMIN');
   }
 
   isLoggedIn(): boolean {

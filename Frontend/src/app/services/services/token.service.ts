@@ -6,14 +6,10 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 })
 export class TokenService {
   private readonly TOKEN_KEY = 'authToken';
-  private token: string | null;
-
-  constructor() {
-    this.token = this.getToken();
-  }
 
   isTokenValid(token: string | null) {
     if (!token) {
+      this.clearToken()
       return false;
     }
     // decode the token
@@ -21,16 +17,16 @@ export class TokenService {
     // check expiry date
     const isTokenExpired = jwtHelper.isTokenExpired(token);
     if (isTokenExpired) {
-      localStorage.clear();
+      this.clearToken()
       return false;
     }
     return true;
   }
 
   getUserRoles(): string[] {
-    if (this.token) {
+    if (this.getToken()) {
       const jwtHelper = new JwtHelperService();
-      const decodedToken = jwtHelper.decodeToken(this.token ?? '');
+      const decodedToken = jwtHelper.decodeToken(this.getToken() ?? '');
       return decodedToken.authorities;
     }
     return [];
@@ -41,14 +37,16 @@ export class TokenService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    if (this.isTokenValid(localStorage.getItem(this.TOKEN_KEY)))
+      return localStorage.getItem(this.TOKEN_KEY);
+    return null;
   }
 
   clearToken(): void {
     localStorage.removeItem(this.TOKEN_KEY);
   }
 
-  public hasToken(): boolean {
+  hasToken(): boolean {
     return !!this.getToken();
   }
 }

@@ -3,6 +3,6 @@
 export interface EventImageDto {
   fileName: string;
   id: string;
-  imageData: Array<string>;
+  imageData: string;
   uploadDate: string;
 }

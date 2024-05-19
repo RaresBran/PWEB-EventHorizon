@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <h2>User Feedback</h2>
+  <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input id="email" type="email" class="form-control" formControlName="email">
+      <div *ngIf="feedbackForm.get('email')?.invalid && (feedbackForm.get('email')?.dirty || feedbackForm.get('email')?.touched)" class="text-danger">
+        Email is required and must be a valid email address.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="feedbackType" class="form-label">Feedback Type</label>
+      <select id="feedbackType" class="form-select" formControlName="feedbackType">
+        <option value="">Select feedback type</option>
+        <option value="suggestion">Suggestion</option>
+        <option value="complaint">Complaint</option>
+        <option value="question">Question</option>
+      </select>
+      <div *ngIf="feedbackForm.get('feedbackType')?.invalid && (feedbackForm.get('feedbackType')?.dirty || feedbackForm.get('feedbackType')?.touched)" class="text-danger">
+        Feedback type is required.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Satisfaction</label><br>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" id="satisfied" value="satisfied" formControlName="satisfaction">
+        <label class="form-check-label" for="satisfied">Satisfied</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" id="neutral" value="neutral" formControlName="satisfaction">
+        <label class="form-check-label" for="neutral">Neutral</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" id="unsatisfied" value="unsatisfied" formControlName="satisfaction">
+        <label class="form-check-label" for="unsatisfied">Unsatisfied</label>
+      </div>
+      <div *ngIf="feedbackForm.get('satisfaction')?.invalid && (feedbackForm.get('satisfaction')?.dirty || feedbackForm.get('satisfaction')?.touched)" class="text-danger">
+        Satisfaction is required.
+      </div>
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="contactConsent" formControlName="contactConsent">
+      <label class="form-check-label" for="contactConsent">I consent to be contacted regarding my feedback</label>
+      <div *ngIf="feedbackForm.get('contactConsent')?.invalid && (feedbackForm.get('contactConsent')?.dirty || feedbackForm.get('contactConsent')?.touched)" class="text-danger">
+        Consent is required.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="comments" class="form-label">Comments</label>
+      <textarea id="comments" class="form-control" formControlName="comments" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="feedbackForm.invalid">Submit Feedback</button>
+  </form>
+</div>

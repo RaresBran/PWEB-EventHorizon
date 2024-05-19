@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {RouterModule, RouterOutlet} from '@angular/router';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {NavbarComponent} from "./shared/navbar/navbar.component";
-import {TokenInterceptor} from "./services/services/token.interceptor";
+import {FooterComponent} from "./shared/footer/footer.component";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,7 @@ import {TokenInterceptor} from "./services/services/token.interceptor";
     RouterModule,
     HttpClientModule,
     NavbarComponent,
+    FooterComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

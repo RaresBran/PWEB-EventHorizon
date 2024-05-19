@@ -1,0 +1,66 @@
+<div class="container mt-4" style="max-width: 800px;">
+  <h2>Create Event</h2>
+  <form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Event Name</label>
+      <input id="name" type="text" class="form-control" formControlName="name" [class.is-invalid]="eventForm.get('name')?.invalid && (eventForm.get('name')?.dirty || eventForm.get('name')?.touched)">
+      <div *ngIf="eventForm.get('name')?.invalid && (eventForm.get('name')?.dirty || eventForm.get('name')?.touched)" class="invalid-feedback">
+        Event name is required.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="information" class="form-label">Information</label>
+      <textarea id="information" class="form-control" formControlName="information" [class.is-invalid]="eventForm.get('information')?.invalid && (eventForm.get('information')?.dirty || eventForm.get('information')?.touched)"></textarea>
+      <div *ngIf="eventForm.get('information')?.invalid && (eventForm.get('information')?.dirty || eventForm.get('information')?.touched)" class="invalid-feedback">
+        Information is required.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="startDate" class="form-label">Start Date</label>
+      <input id="startDate" type="date" class="form-control" formControlName="startDate" [class.is-invalid]="eventForm.get('startDate')?.invalid && (eventForm.get('startDate')?.dirty || eventForm.get('startDate')?.touched)">
+      <div *ngIf="eventForm.get('startDate')?.invalid && (eventForm.get('startDate')?.dirty || eventForm.get('startDate')?.touched)" class="invalid-feedback">
+        Start date is required.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="endDate" class="form-label">End Date</label>
+      <input id="endDate" type="date" class="form-control" formControlName="endDate" [class.is-invalid]="eventForm.get('endDate')?.invalid && (eventForm.get('endDate')?.dirty || eventForm.get('endDate')?.touched)">
+      <div *ngIf="eventForm.get('endDate')?.invalid && (eventForm.get('endDate')?.dirty || eventForm.get('endDate')?.touched)" class="invalid-feedback">
+        End date is required.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="link" class="form-label">Link</label>
+      <input id="link" type="text" class="form-control" formControlName="link">
+    </div>
+    <div formArrayName="locations" *ngFor="let location of locations.controls; let i = index">
+      <div [formGroupName]="i" class="mb-3">
+        <label for="city-{{i}}" class="form-label">City</label>
+        <select id="city-{{i}}" class="form-select" formControlName="city" [class.is-invalid]="location.get('city')?.invalid && (location.get('city')?.dirty || location.get('city')?.touched)">
+          <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
+        </select>
+        <div *ngIf="location.get('city')?.invalid && (location.get('city')?.dirty || location.get('city')?.touched)" class="invalid-feedback">
+          City is required.
+        </div>
+        <label for="streetAddress-{{i}}" class="form-label">Street Address</label>
+        <input id="streetAddress-{{i}}" type="text" class="form-control" formControlName="streetAddress" [class.is-invalid]="location.get('streetAddress')?.invalid && (location.get('streetAddress')?.dirty || location.get('streetAddress')?.touched)">
+        <div *ngIf="location.get('streetAddress')?.invalid && (location.get('streetAddress')?.dirty || location.get('streetAddress')?.touched)" class="invalid-feedback">
+          Street address is required.
+        </div>
+        <button type="button" class="btn btn-danger mt-2" (click)="removeLocation(i)">Remove Location</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" (click)="addLocation()">Add Location</button>
+    <div class="mb-3">
+      <label for="categories" class="form-label">Categories</label>
+      <select id="categories" class="form-select" formControlName="categories" multiple>
+        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="images" class="form-label">Images</label>
+      <input id="images" type="file" class="form-control" (change)="onFileChange($event)" multiple>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">Create Event</button>
+  </form>
+</div>

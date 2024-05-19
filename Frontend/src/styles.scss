@@ -6,3 +6,25 @@
   width: 80%;
   margin-top: 15%;
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+router-outlet {
+  flex: 1;
+}
+
+.footer {
+  margin-top: auto;
+}
+

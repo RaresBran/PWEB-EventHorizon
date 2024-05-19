@@ -4,21 +4,35 @@
       <h2>{{ event.name }}</h2>
       <p class="text-muted">{{ event.startDate | date:'longDate' }} - {{ event.endDate | date:'longDate' }}</p>
       <div *ngIf="event.images?.length">
-        <div *ngFor="let image of event.images" class="mb-2">
-          <img [src]="image.imageData" class="img-fluid" alt="{{ event.name }}">
+        <div id="carouselEventImages" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div *ngFor="let image of event.images; let i = index" [ngClass]="{'carousel-item': true, 'active': i === 0}">
+              <img [src]="image ? image.imageData : 'https://via.placeholder.com/800x400?text=Event'"
+                   class="d-block w-100"
+                   alt="{{ event.name + ' image' }}">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselEventImages" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselEventImages" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
-      <p>{{ event.information }}</p>
+      <p class="mt-3">{{ event.information }}</p>
       <div *ngIf="event.link">
         <a [href]="event.link" target="_blank" class="btn btn-link">More Info</a>
       </div>
-      <div *ngIf="event.locations?.length">
+      <div *ngIf="event.locations?.length" class="mt-3">
         <h5>Locations</h5>
         <ul>
           <li *ngFor="let location of event.locations">{{ location.streetAddress }}</li>
         </ul>
       </div>
-      <div *ngIf="event.categories?.length">
+      <div *ngIf="event.categories?.length" class="mt-3">
         <h5>Categories</h5>
         <ul>
           <li *ngFor="let category of event.categories">{{ category.name }}</li>
@@ -26,10 +40,10 @@
       </div>
     </div>
     <div class="col-md-4">
-      <div *ngIf="isLoggedIn">
+      <div *ngIf="isLoggedIn" class="d-grid gap-2">
         <button class="btn btn-primary mb-2" (click)="addToMyList()" *ngIf="!isAdmin">Add to My List</button>
         <button class="btn btn-warning mb-2" (click)="editEvent()" *ngIf="isAdmin">Edit Event</button>
-        <button class="btn btn-danger mb-2" (click)="deleteEvent()" *ngIf="isAdmin">Delete Event</button>
+        <button class="btn btn-danger mb-2" (click)="openDeleteConfirmationModal()" *ngIf="isAdmin">Delete Event</button>
       </div>
       <div *ngIf="!isLoggedIn">
         <p><a href="#" routerLink="/login">Sign in</a> to manage events.</p>
@@ -48,4 +62,5 @@
       </div>
     </div>
   </div>
+  <app-confirmation-modal (confirmed)="confirmDeletion()" #confirmationModal></app-confirmation-modal>
 </div>

@@ -36,7 +36,7 @@ public class EventImageService {
     private final EventImageRepository eventImageRepository;
     private final ModelMapper modelMapper;
 
-    public static final float IMAGE_COMPRESSION_QUALITY = 0.0f;
+    public static final float IMAGE_COMPRESSION_QUALITY = 0.5f;
 
     public EventImage uploadEventImage(String eventId, MultipartFile file) {
         Event event = eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);

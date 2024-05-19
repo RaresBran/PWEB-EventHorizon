@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { EventDto } from '../../models/event-dto';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,8 +8,8 @@ import { ConfirmationModalComponent } from "../../shared/confirmation-modal/conf
 import { UserStoreService } from "../../services/store/user-store.service";
 
 @Component({
-  selector: 'app-city',
-  templateUrl: './city.component.html',
+  selector: 'app-user-events',
+  templateUrl: './user-events.component.html',
   standalone: true,
   imports: [
     CommonModule,
@@ -17,34 +17,26 @@ import { UserStoreService } from "../../services/store/user-store.service";
     NgOptimizedImage,
     ConfirmationModalComponent
   ],
-  styleUrls: ['./city.component.scss']
+  styleUrls: ['./user-events.component.scss']
 })
-export class CityComponent implements OnInit {
-  city: string = '';
+export class UserEventsComponent implements OnInit {
   events: Array<EventDto> = [];
-  filteredEvents: Array<EventDto> = []; // To hold filtered events
-  page: number = 0;
-  size: number = 4;
-  totalPages: number = 0;
+  filteredEvents: Array<EventDto> = [];
   isAdmin: boolean = false;
   isLoggedIn: boolean = false;
   searchQuery: string = '';
-  eventIdToDelete: string | null = null;
+  eventIdToRemove: string | null = null;
 
   @ViewChild('confirmationModal') confirmationModal!: ConfirmationModalComponent;
 
   constructor(
-    private route: ActivatedRoute,
     private eventService: EventService,
     private userStore: UserStoreService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(() => {
-      this.city = this.route.snapshot.paramMap.get('city')?.toUpperCase() ?? '';
-      this.loadEvents();
-    });
+    this.loadUserEvents();
 
     this.userStore.getCurrentUser().subscribe(user => {
       this.isLoggedIn = this.userStore.isLoggedIn();
@@ -52,11 +44,10 @@ export class CityComponent implements OnInit {
     });
   }
 
-  loadEvents(): void {
-    this.eventService.getEventsByCity(this.city, this.page, this.size).subscribe(data => {
-      this.events = data.content ?? [];
-      this.filteredEvents = this.events; // Initialize filteredEvents with all events
-      this.totalPages = data.totalPages ?? 0;
+  loadUserEvents(): void {
+    this.eventService.getCurrentUserEventList().subscribe(data => {
+      this.events = data;
+      this.filteredEvents = this.events;
       this.events.forEach(event => {
         event.images?.forEach(image => {
           image.imageData = 'data:image/png;base64,' + image.imageData;
@@ -65,44 +56,23 @@ export class CityComponent implements OnInit {
     });
   }
 
-  onPageChange(page: number): void {
-    if (page >= 0 && page < this.totalPages) {
-      this.page = page;
-      this.loadEvents();
-    }
-  }
-
   viewEvent(eventId: string): void {
     this.router.navigate(['/event', eventId]).then();
   }
 
-  addToMyList(eventId: string): void {
-    this.eventService.addEventToUserList(eventId).subscribe(() => {
-      alert('Event added to your list');
-    });
-  }
-
-  openDeleteConfirmationModal(eventId: string): void {
-    this.eventIdToDelete = eventId;
+  openRemoveConfirmationModal(eventId: string): void {
+    this.eventIdToRemove = eventId;
     this.confirmationModal.show();
   }
 
-  confirmDeletion(): void {
-    if (this.eventIdToDelete) {
-      this.eventService.deleteEvent(this.eventIdToDelete).subscribe(() => {
-        alert('Event deleted');
-        this.loadEvents();
-        this.eventIdToDelete = null;
+  confirmRemoval(): void {
+    if (this.eventIdToRemove) {
+      this.eventService.removeEventFromUserList(this.eventIdToRemove).subscribe(() => {
+        alert('Event removed from your list');
+        this.loadUserEvents();
+        this.eventIdToRemove = null;
       });
     }
-  }
-
-  editEvent(eventId: string): void {
-    // Navigate to an edit event component or handle editing inline
-  }
-
-  addEvent(): void {
-    this.router.navigate(['/create-event', this.city]).then();
   }
 
   searchEvents(): void {
@@ -111,9 +81,5 @@ export class CityComponent implements OnInit {
       event.information?.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
       event.locations?.some(location => location.streetAddress?.toLowerCase().includes(this.searchQuery.toLowerCase()))
     );
-  }
-
-  getTotalPages(): number {
-    return this.totalPages;
   }
 }

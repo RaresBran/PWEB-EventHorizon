@@ -1,9 +1,6 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Events in {{ city }}</h2>
-    <div *ngIf="isAdmin">
-      <button class="btn btn-success" (click)="addEvent()">Add Event</button>
-    </div>
+    <h2>My Events</h2>
   </div>
   <div class="mb-3">
     <input type="text" class="form-control" placeholder="Search events..." [(ngModel)]="searchQuery"
@@ -24,26 +21,10 @@
             <p class="card-text">{{ event.locations[0].streetAddress }}</p>
           </div>
           <button class="btn btn-primary" (click)="viewEvent(event.id)">View Details</button>
-          <button class="btn btn-primary" (click)="addToMyList(event.id)" *ngIf="isLoggedIn">Add to My List</button>
-          <button class="btn btn-warning" (click)="editEvent(event.id)" *ngIf="isAdmin">Edit</button>
-          <button class="btn btn-danger" (click)="openDeleteConfirmationModal(event.id)" *ngIf="isAdmin">Delete</button>
+          <button class="btn btn-danger" (click)="openRemoveConfirmationModal(event.id)" *ngIf="isLoggedIn">Remove from My List</button>
         </div>
       </div>
     </div>
   </div>
-  <nav *ngIf="filteredEvents?.length" class="mt-xxl-5">
-    <ul class="pagination">
-      <li class="page-item" [class.disabled]="page === 0" (click)="onPageChange(page - 1)">
-        <a class="page-link">Previous</a>
-      </li>
-      <li class="page-item" *ngFor="let p of [].constructor(getTotalPages()); let i = index" [class.active]="i === page"
-          (click)="onPageChange(i)">
-        <a class="page-link">{{ i + 1 }}</a>
-      </li>
-      <li class="page-item" [class.disabled]="page === getTotalPages() - 1" (click)="onPageChange(page + 1)">
-        <a class="page-link">Next</a>
-      </li>
-    </ul>
-  </nav>
-  <app-confirmation-modal (confirmed)="confirmDeletion()" #confirmationModal></app-confirmation-modal>
+  <app-confirmation-modal (confirmed)="confirmRemoval()" #confirmationModal></app-confirmation-modal>
 </div>

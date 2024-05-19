@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
-import {EventService} from "../../services/services/event.service";
-import {EventDto} from "../../models/event-dto";
-import {UserStoreService} from "../../services/store/user-store.service";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { EventService } from "../../services/services/event.service";
+import { EventDto } from "../../models/event-dto";
+import { UserStoreService } from "../../services/store/user-store.service";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import {ConfirmationModalComponent} from "../../shared/confirmation-modal/confirmation-modal.component";
 
 @Component({
   selector: 'app-event-info',
@@ -13,7 +14,8 @@ import {FormsModule} from "@angular/forms";
   imports: [
     RouterLink,
     CommonModule,
-    FormsModule
+    FormsModule,
+    ConfirmationModalComponent
   ],
   styleUrls: ['./event-info.component.scss']
 })
@@ -22,10 +24,13 @@ export class EventInfoComponent implements OnInit {
   isAdmin: boolean = false;
   isLoggedIn: boolean = false;
 
+  @ViewChild('confirmationModal') confirmationModal!: ConfirmationModalComponent;
+
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
-    private userStore: UserStoreService
+    private userStore: UserStoreService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +38,9 @@ export class EventInfoComponent implements OnInit {
     if (eventId) {
       this.eventService.getEventById(eventId).subscribe(data => {
         this.event = data;
+        this.event.images?.forEach(image => {
+          image.imageData = 'data:image/png;base64,' + image.imageData;
+        });
       });
     }
 
@@ -50,10 +58,15 @@ export class EventInfoComponent implements OnInit {
     }
   }
 
-  deleteEvent(): void {
+  openDeleteConfirmationModal(): void {
+    this.confirmationModal.show();
+  }
+
+  confirmDeletion(): void {
     if (this.event.id) {
-      this.eventService.deleteEvent(this.event.id).subscribe(() => {
+      this.eventService.deleteEvent(this.event.id).subscribe(message => {
         alert('Event deleted');
+        this.router.navigate(['/city', this.event.locations[0].city]).then();
       });
     }
   }

@@ -61,7 +61,7 @@ export class AuthenticationService implements OnInit {
   }
 
   private handleAuthResponse(response: AuthenticationResponse): void {
-    if (response.token !== undefined && this.tokenService.isTokenValid(response.token)) {
+    if (this.tokenService.isTokenValid(response.token ?? null)) {
       this.tokenService.setToken(response.token ?? '');
       this.authState.next(true);
     }

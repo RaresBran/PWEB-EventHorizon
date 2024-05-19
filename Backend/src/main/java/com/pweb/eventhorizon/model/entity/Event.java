@@ -51,7 +51,7 @@ public class Event {
     private List<Location> locations;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
     private List<EventImage> images = new ArrayList<>();
