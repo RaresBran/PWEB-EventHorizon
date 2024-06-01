@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>My Events</h2>
+  </div>
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Search events..." [(ngModel)]="searchQuery"
+           (ngModelChange)="searchEvents()">
+  </div>
+  <div class="row">
+    <div class="col-md-6" *ngFor="let event of filteredEvents">
+      <div class="card mb-4">
+        <div class="card-img-container">
+          <img [src]="event.images ? event.images[0] ? event.images[0].imageData : 'https://via.placeholder.com/400x250?text=Event' : 'https://via.placeholder.com/400x250?text=Event'"
+               class="card-img-top"
+               alt="{{ event.name }}">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ event.name }}</h5>
+          <p class="card-text">{{ event.startDate | date:'longDate' }} - {{ event.endDate | date:'longDate' }}</p>
+          <div *ngIf="event.locations?.length">
+            <p class="card-text">{{ event.locations[0].streetAddress }}</p>
+          </div>
+          <button class="btn btn-primary me-3 mt-2" (click)="viewEvent(event.id)">View Details</button>
+          <button class="btn btn-danger mt-2" (click)="openRemoveConfirmationModal(event.id)" *ngIf="isLoggedIn">Remove from My List</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-confirmation-modal
+    (confirmed)="confirmRemoval()"
+    title="Confirm removal"
+    message="Are you sure you want to remove this event?"
+    #confirmationModal>
+  </app-confirmation-modal>
+</div>
