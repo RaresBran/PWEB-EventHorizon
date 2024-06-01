@@ -12,7 +12,7 @@
         <div class="card-img-container">
           <img [src]="event.images ? event.images[0] ? event.images[0].imageData : 'https://via.placeholder.com/400x250?text=Event' : 'https://via.placeholder.com/400x250?text=Event'"
                class="card-img-top"
-               alt="{{ event.name + ' image' }}">
+               alt="{{ event.name }}">
         </div>
         <div class="card-body">
           <h5 class="card-title">{{ event.name }}</h5>
@@ -20,11 +20,16 @@
           <div *ngIf="event.locations?.length">
             <p class="card-text">{{ event.locations[0].streetAddress }}</p>
           </div>
-          <button class="btn btn-primary" (click)="viewEvent(event.id)">View Details</button>
-          <button class="btn btn-danger" (click)="openRemoveConfirmationModal(event.id)" *ngIf="isLoggedIn">Remove from My List</button>
+          <button class="btn btn-primary me-3 mt-2" (click)="viewEvent(event.id)">View Details</button>
+          <button class="btn btn-danger mt-2" (click)="openRemoveConfirmationModal(event.id)" *ngIf="isLoggedIn">Remove from My List</button>
         </div>
       </div>
     </div>
   </div>
-  <app-confirmation-modal (confirmed)="confirmRemoval()" #confirmationModal></app-confirmation-modal>
+  <app-confirmation-modal
+    (confirmed)="confirmRemoval()"
+    title="Confirm removal"
+    message="Are you sure you want to remove this event?"
+    #confirmationModal>
+  </app-confirmation-modal>
 </div>

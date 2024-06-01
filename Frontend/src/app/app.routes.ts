@@ -24,6 +24,7 @@ export const routes: Routes = [
   {path: 'city/:city', component: CityComponent},
   {path: 'event/:id', component: EventInfoComponent},
   { path: 'create-event/:city', component: CreateEventComponent },
+  { path: 'edit-event/:city/:id', component: CreateEventComponent },
   {path: 'my-events', component: UserEventsComponent},
   { path: 'feedback', component: FeedbackComponent },
   { // Default route

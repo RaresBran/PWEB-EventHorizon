@@ -44,11 +44,11 @@ public class Event {
             joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
     )
-    private List<EventCategory> categories;
+    private List<EventCategory> categories = new ArrayList<>();
 
     @Column(nullable=false)
     @OneToMany(orphanRemoval = true, cascade=CascadeType.ALL, mappedBy = "event", fetch = FetchType.EAGER)
-    private List<Location> locations;
+    private List<Location> locations = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-confirmation-modal',
@@ -14,6 +14,8 @@ import {FormsModule} from "@angular/forms";
 })
 export class ConfirmationModalComponent {
   @Output() confirmed = new EventEmitter<void>();
+  @Input() title: string = 'Confirm Deletion';
+  @Input() message: string = 'Are you sure you want to delete this event?';
   showModal: boolean = false;
 
   show(): void {

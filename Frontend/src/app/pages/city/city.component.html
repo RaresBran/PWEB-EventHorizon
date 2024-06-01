@@ -15,7 +15,7 @@
         <div class="card-img-container">
           <img [src]="event.images ? event.images[0] ? event.images[0].imageData : 'https://via.placeholder.com/400x250?text=Event' : 'https://via.placeholder.com/400x250?text=Event'"
                class="card-img-top"
-               alt="{{ event.name + ' image' }}">
+               alt="{{ event.name }}">
         </div>
         <div class="card-body">
           <h5 class="card-title">{{ event.name }}</h5>

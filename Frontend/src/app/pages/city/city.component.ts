@@ -98,7 +98,7 @@ export class CityComponent implements OnInit {
   }
 
   editEvent(eventId: string): void {
-    // Navigate to an edit event component or handle editing inline
+    this.router.navigate(['/edit-event', this.city, eventId]).then();
   }
 
   addEvent(): void {

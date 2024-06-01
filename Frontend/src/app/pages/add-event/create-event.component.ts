@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventCategoryDto } from '../../models/event-category-dto';
 import { EventService } from "../../services/services/event.service";
 import { CommonModule } from "@angular/common";
-import {EventCategoryService} from "../../services/services/event-category.service";
+import { EventCategoryService } from "../../services/services/event-category.service";
 import {EventSaveDto} from "../../models/event-save-dto";
 
 @Component({
@@ -22,6 +22,9 @@ export class CreateEventComponent implements OnInit {
   categories: EventCategoryDto[] = [];
   availableCities: string[] = ['BUCHAREST', 'CLUJ_NAPOCA', 'BRASOV'];
   currentCity: string = '';
+  eventId: string | null = null;
+  isEditMode: boolean = false;
+  existingImages: string[] = []; // Store base64 strings for existing images
 
   constructor(
     private fb: FormBuilder,
@@ -31,6 +34,7 @@ export class CreateEventComponent implements OnInit {
     private router: Router
   ) {
     this.eventForm = this.fb.group({
+      id: [null], // Add ID field to the form group
       name: ['', Validators.required],
       information: ['', Validators.required],
       startDate: ['', Validators.required],
@@ -45,6 +49,12 @@ export class CreateEventComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.currentCity = params.get('city') ?? '';
+      this.eventId = params.get('id');
+      this.isEditMode = !!this.eventId;
+
+      if (this.isEditMode && this.eventId) {
+        this.loadEvent(this.eventId);
+      }
     });
 
     this.eventCategoryService.getAllEventCategories().subscribe(categories => {
@@ -78,10 +88,39 @@ export class CreateEventComponent implements OnInit {
     }
   }
 
+  loadEvent(eventId: string): void {
+    this.eventService.getEventById(eventId).subscribe(event => {
+      this.eventForm.patchValue({
+        id: event.id, // Set the event ID
+        name: event.name,
+        information: event.information,
+        startDate: this.formatDate(event.startDate), // Convert to yyyy-MM-dd format
+        endDate: this.formatDate(event.endDate), // Convert to yyyy-MM-dd format
+        link: event.link,
+        categories: event.categories?.map(category => category.id),
+        locations: event.locations
+      });
+
+      this.eventForm.setControl('locations', this.fb.array(
+        event.locations.map(location => this.fb.group({
+          city: [location.city, Validators.required],
+          streetAddress: [location.streetAddress, Validators.required]
+        }))
+      ));
+
+      this.existingImages = event.images?.map(image => 'data:image/png;base64,' + image.imageData) || [];
+    });
+  }
+
+  formatDate(date: string | undefined): string | null {
+    return date ? new Date(date).toISOString().split('T')[0] : null;
+  }
+
   saveEvent(): void {
     if (this.eventForm.valid) {
       const formValue = this.eventForm.value;
       const event: EventSaveDto = {
+        id: formValue.id, // Include the ID in the DTO
         name: formValue.name,
         information: formValue.information,
         startDate: formValue.startDate,
@@ -100,15 +139,13 @@ export class CreateEventComponent implements OnInit {
         formData.append('files', file);
       });
 
-      const redirectUrl = ['/city', this.currentCity];
-
-      if (!formData.get('files')) {
+      if (this.isEditMode) {
         this.eventService.saveEvent(event).subscribe(() => {
-          this.router.navigate(redirectUrl).then();
+          this.router.navigate(['/city', this.currentCity]).then();
         });
       } else {
         this.eventService.saveEventWithImages(formData).subscribe(() => {
-          this.router.navigate(redirectUrl).then();
+          this.router.navigate(['/city', this.currentCity]).then();
         });
       }
     }

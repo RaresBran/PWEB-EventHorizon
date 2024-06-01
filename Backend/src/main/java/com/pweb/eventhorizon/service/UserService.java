@@ -8,20 +8,24 @@ import com.pweb.eventhorizon.repository.EventRepository;
 import com.pweb.eventhorizon.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final ModelMapper mapper;
 
+    @Transactional
     public UserDto addEventToList(Authentication authentication, String eventId) {
         Event event = eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(EntityNotFoundException::new);

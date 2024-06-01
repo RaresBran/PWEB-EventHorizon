@@ -1,5 +1,5 @@
 <div class="container mt-4" style="max-width: 800px;">
-  <h2>Create Event</h2>
+  <h2>{{ isEditMode ? 'Edit Event' : 'Create Event' }}</h2>
   <form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
     <div class="mb-3">
       <label for="name" class="form-label">Event Name</label>
@@ -47,7 +47,7 @@
         <div *ngIf="location.get('streetAddress')?.invalid && (location.get('streetAddress')?.dirty || location.get('streetAddress')?.touched)" class="invalid-feedback">
           Street address is required.
         </div>
-        <button type="button" class="btn btn-danger mt-2" (click)="removeLocation(i)">Remove Location</button>
+        <button type="button" class="btn btn-danger mt-2" (click)="removeLocation(i)" *ngIf="locations.controls.length > 1">Remove Location</button>
       </div>
     </div>
     <button type="button" class="btn btn-secondary mb-3" (click)="addLocation()">Add Location</button>
@@ -57,10 +57,16 @@
         <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
       </select>
     </div>
-    <div class="mb-3">
+    <div class="mb-3" *ngIf="existingImages.length">
+      <label class="form-label">Existing Images</label>
+      <div class="existing-images">
+        <img *ngFor="let image of existingImages" [src]="image" class="img-thumbnail" style="max-height: 100px; margin-right: 10px;">
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="!isEditMode">
       <label for="images" class="form-label">Images</label>
       <input id="images" type="file" class="form-control" (change)="onFileChange($event)" multiple>
     </div>
-    <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">Create Event</button>
+    <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">{{ isEditMode ? 'Save Event' : 'Create Event' }}</button>
   </form>
 </div>
