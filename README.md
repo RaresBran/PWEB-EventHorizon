@@ -22,10 +22,12 @@ A Java + Angular web application for discovering events in your city and saving 
 ```bash
 cd Backend
 ./gradlew bootRun
-
+```
 
 ### Frontend
 
+```bash
 cd Frontend
 npm install
 ng serve
+```
